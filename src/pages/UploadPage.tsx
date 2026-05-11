@@ -82,14 +82,14 @@ export default function UploadPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-900 dark:bg-slate-900 flex flex-col">
-      <header className="flex items-center justify-between px-6 py-4 border-b border-slate-700">
-        <h1 className="text-lg font-bold text-slate-100">🔐 PNG 비밀번호 삽입</h1>
+    <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex flex-col transition-colors">
+      <header className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700 transition-colors">
+        <h1 className="text-lg font-bold text-slate-900 dark:text-slate-100">🔐 PNG 비밀번호 삽입</h1>
         <div className="flex items-center gap-2">
           <ThemeToggle />
           <button
             onClick={handleLogout}
-            className="px-3 py-1.5 text-sm rounded-lg text-slate-300 hover:bg-slate-700 transition-colors"
+            className="px-3 py-1.5 text-sm rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
           >
             로그아웃
           </button>
@@ -98,12 +98,12 @@ export default function UploadPage() {
 
       <main className="flex flex-1 items-center justify-center px-4">
         <div className="w-full max-w-md">
-          <div className="bg-slate-800 rounded-2xl shadow-xl p-8">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 transition-colors">
 
             {/* 상태 A: 파일 업로드 대기 */}
             {stage === 'idle' && (
               <>
-                <p className="text-slate-300 text-center mb-6 text-sm">
+                <p className="text-slate-600 dark:text-slate-300 text-center mb-6 text-sm">
                   PNG 파일을 선택하거나 이 영역에 끌어다 놓으세요.
                 </p>
                 <div
@@ -113,18 +113,18 @@ export default function UploadPage() {
                   onDrop={handleDrop}
                   className={`w-full border-2 border-dashed rounded-xl py-16 flex flex-col items-center gap-3 cursor-pointer transition-colors
                     ${dragging
-                      ? 'border-indigo-400 bg-indigo-500/10 text-indigo-400'
-                      : 'border-slate-600 hover:border-indigo-500 text-slate-400 hover:text-indigo-400'
+                      ? 'border-indigo-400 bg-indigo-500/10 text-indigo-500'
+                      : 'border-slate-300 dark:border-slate-600 hover:border-indigo-400 text-slate-400 dark:text-slate-500 hover:text-indigo-500'
                     }`}
                 >
                   <span className="text-5xl">{dragging ? '📂' : '🖼️'}</span>
                   <span className="font-medium">
                     {dragging ? '여기에 놓으세요!' : 'PNG 파일 선택 또는 드래그&드롭'}
                   </span>
-                  <span className="text-xs text-slate-500">클릭하거나 파일을 끌어다 놓기</span>
+                  <span className="text-xs text-slate-400 dark:text-slate-500">클릭하거나 파일을 끌어다 놓기</span>
                 </div>
                 {dragError && (
-                  <p className="text-red-400 text-sm text-center mt-3">{dragError}</p>
+                  <p className="text-red-500 dark:text-red-400 text-sm text-center mt-3">{dragError}</p>
                 )}
                 <input
                   ref={inputRef}
@@ -139,11 +139,11 @@ export default function UploadPage() {
             {/* 상태 B: 파일 선택됨 */}
             {stage === 'selected' && previewUrl && (
               <>
-                <p className="text-slate-400 text-sm text-center mb-4 truncate">{fileName}</p>
+                <p className="text-slate-500 dark:text-slate-400 text-sm text-center mb-4 truncate">{fileName}</p>
                 <img
                   src={previewUrl}
                   alt="미리보기"
-                  className="w-full max-h-64 object-contain rounded-lg mb-6 bg-slate-700"
+                  className="w-full max-h-64 object-contain rounded-lg mb-6 bg-slate-100 dark:bg-slate-700"
                 />
                 <button
                   onClick={handleDownload}
@@ -153,7 +153,7 @@ export default function UploadPage() {
                 </button>
                 <button
                   onClick={handleReset}
-                  className="w-full py-2.5 rounded-lg text-slate-400 hover:bg-slate-700 text-sm transition-colors"
+                  className="w-full py-2.5 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 text-sm transition-colors"
                 >
                   다른 파일 선택
                 </button>
@@ -171,8 +171,8 @@ export default function UploadPage() {
             {stage === 'done' && (
               <div className="text-center py-4">
                 <div className="text-6xl mb-4">✅</div>
-                <h2 className="text-xl font-bold text-slate-100 mb-2">완료!</h2>
-                <p className="text-slate-400 text-sm mb-8">
+                <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">완료!</h2>
+                <p className="text-slate-500 dark:text-slate-400 text-sm mb-8">
                   비밀번호가 삽입된 PNG 파일이 다운로드되었습니다.
                 </p>
                 <button

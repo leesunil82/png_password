@@ -19,7 +19,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={() => setDark(!dark)}
-      className="p-2 rounded-lg text-xl transition-colors hover:bg-slate-700 dark:hover:bg-slate-600"
+      className="p-2 rounded-lg text-xl transition-colors hover:bg-slate-200 dark:hover:bg-slate-700"
       aria-label="테마 전환"
     >
       {dark ? '☀️' : '🌙'}
