@@ -11,6 +11,8 @@ export default function UploadPage() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [fileName, setFileName] = useState<string>('')
   const [file, setFile] = useState<File | null>(null)
+  const [dragging, setDragging] = useState(false)
+  const [dragError, setDragError] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
   const navigate = useNavigate()
 
@@ -21,16 +23,40 @@ export default function UploadPage() {
   }
 
   function loadFile(selected: File) {
+    setDragError('')
     setFile(selected)
     setFileName(selected.name)
     setPreviewUrl(URL.createObjectURL(selected))
     setStage('selected')
   }
 
+  function handleDragOver(e: React.DragEvent) {
+    e.preventDefault()
+    setDragging(true)
+  }
+
+  function handleDragLeave(e: React.DragEvent) {
+    e.preventDefault()
+    setDragging(false)
+  }
+
+  function handleDrop(e: React.DragEvent) {
+    e.preventDefault()
+    setDragging(false)
+    const dropped = e.dataTransfer.files?.[0]
+    if (!dropped) return
+    if (dropped.type !== 'image/png') {
+      setDragError('PNG 파일만 올릴 수 있습니다.')
+      return
+    }
+    loadFile(dropped)
+  }
+
   function handleReset() {
     setStage('idle')
     setFile(null)
     setFileName('')
+    setDragError('')
     if (previewUrl) URL.revokeObjectURL(previewUrl)
     setPreviewUrl(null)
     if (inputRef.current) inputRef.current.value = ''
@@ -78,16 +104,28 @@ export default function UploadPage() {
             {stage === 'idle' && (
               <>
                 <p className="text-slate-300 text-center mb-6 text-sm">
-                  PNG 파일을 선택하면 비밀번호를 삽입하여 다운로드할 수 있습니다.
+                  PNG 파일을 선택하거나 이 영역에 끌어다 놓으세요.
                 </p>
-                <button
+                <div
                   onClick={() => inputRef.current?.click()}
-                  className="w-full border-2 border-dashed border-slate-600 hover:border-indigo-500 rounded-xl py-16 flex flex-col items-center gap-3 text-slate-400 hover:text-indigo-400 transition-colors cursor-pointer"
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                  className={`w-full border-2 border-dashed rounded-xl py-16 flex flex-col items-center gap-3 cursor-pointer transition-colors
+                    ${dragging
+                      ? 'border-indigo-400 bg-indigo-500/10 text-indigo-400'
+                      : 'border-slate-600 hover:border-indigo-500 text-slate-400 hover:text-indigo-400'
+                    }`}
                 >
-                  <span className="text-5xl">🖼️</span>
-                  <span className="font-medium">PNG 파일 선택</span>
-                  <span className="text-xs text-slate-500">클릭하여 파일 탐색기 열기</span>
-                </button>
+                  <span className="text-5xl">{dragging ? '📂' : '🖼️'}</span>
+                  <span className="font-medium">
+                    {dragging ? '여기에 놓으세요!' : 'PNG 파일 선택 또는 드래그&드롭'}
+                  </span>
+                  <span className="text-xs text-slate-500">클릭하거나 파일을 끌어다 놓기</span>
+                </div>
+                {dragError && (
+                  <p className="text-red-400 text-sm text-center mt-3">{dragError}</p>
+                )}
                 <input
                   ref={inputRef}
                   type="file"
