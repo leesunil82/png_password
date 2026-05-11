@@ -29,7 +29,7 @@ export default function LoginPage() {
         <div className="w-full max-w-sm">
           <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 transition-colors">
             <div className="mb-8 text-center">
-              <div className="text-4xl mb-3">🔐</div>
+              <img src="/images/logo.png" alt="FAM4 로고" className="w-24 h-24 object-contain mx-auto mb-3" />
               <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
                 PNG 비밀번호 삽입
               </h1>

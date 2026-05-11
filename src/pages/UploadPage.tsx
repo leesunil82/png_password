@@ -84,7 +84,10 @@ export default function UploadPage() {
   return (
     <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex flex-col transition-colors">
       <header className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700 transition-colors">
-        <h1 className="text-lg font-bold text-slate-900 dark:text-slate-100">🔐 PNG 비밀번호 삽입</h1>
+        <div className="flex items-center gap-2">
+          <img src="/images/logo.png" alt="FAM4 로고" className="w-8 h-8 object-contain" />
+          <h1 className="text-lg font-bold text-slate-900 dark:text-slate-100">PNG 비밀번호 삽입</h1>
+        </div>
         <div className="flex items-center gap-2">
           <ThemeToggle />
           <button
