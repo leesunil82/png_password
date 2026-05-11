@@ -4,14 +4,16 @@ import { login } from '../lib/auth'
 import ThemeToggle from '../components/ThemeToggle'
 
 export default function LoginPage() {
-  const [id, setId] = useState('')
-  const [pw, setPw] = useState('')
+  const [id, setId] = useState(() => localStorage.getItem('saved_id') ?? '')
+  const [pw, setPw] = useState(() => localStorage.getItem('saved_pw') ?? '')
   const [error, setError] = useState('')
   const navigate = useNavigate()
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (login(id, pw)) {
+      localStorage.setItem('saved_id', id)
+      localStorage.setItem('saved_pw', pw)
       navigate('/upload')
     } else {
       setError('아이디 또는 비밀번호가 올바르지 않습니다.')
@@ -46,6 +48,7 @@ export default function LoginPage() {
                   value={id}
                   onChange={e => setId(e.target.value)}
                   autoComplete="username"
+                  autoFocus={!localStorage.getItem('saved_id')}
                   className="w-full px-4 py-2.5 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 border border-slate-300 dark:border-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
                   placeholder="아이디 입력"
                 />
@@ -60,6 +63,7 @@ export default function LoginPage() {
                   value={pw}
                   onChange={e => setPw(e.target.value)}
                   autoComplete="current-password"
+                  autoFocus={!!localStorage.getItem('saved_id')}
                   className="w-full px-4 py-2.5 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 border border-slate-300 dark:border-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
                   placeholder="비밀번호 입력"
                 />
